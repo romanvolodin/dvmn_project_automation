@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -88,3 +89,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if DEBUG:
     INTERNAL_IPS = ALLOWED_HOSTS
+
+AUTH_USER_MODEL = "core.User"
