@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import User
+from .models import ProductManager, Project, Student, Team, User, Week
 
 
 class CustomUserAdmin(UserAdmin):
@@ -22,7 +22,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
     fieldsets = (
-        (None, {"fields": ("email", "password")}),
+        (None, {"fields": ("email", "name", "password")}),
         ("Permissions", {"fields": ("is_staff", "is_active")}),
     )
     add_fieldsets = (
@@ -30,7 +30,14 @@ class CustomUserAdmin(UserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2", "is_staff", "is_active"),
+                "fields": (
+                    "email",
+                    "name",
+                    "password1",
+                    "password2",
+                    "is_staff",
+                    "is_active",
+                ),
             },
         ),
     )
@@ -38,4 +45,9 @@ class CustomUserAdmin(UserAdmin):
     ordering = ("email",)
 
 
+admin.site.register(ProductManager)
+admin.site.register(Project)
+admin.site.register(Student)
+admin.site.register(Team)
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Week)
