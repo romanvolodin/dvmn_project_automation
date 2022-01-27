@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import ProductManager, Project, Student, Team, User, Week
+from .models import TimeSlot
+from .models import StudentProjectPreferences
 
 
 class CustomUserAdmin(UserAdmin):
@@ -51,3 +53,5 @@ admin.site.register(Student)
 admin.site.register(Team)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Week)
+admin.site.register(TimeSlot)
+admin.site.register(StudentProjectPreferences)
