@@ -67,7 +67,7 @@ class Student(models.Model):
         max_length=32,
         default="",
         verbose_name="уровень",
-    )    
+    )
     tg_username = models.CharField(
         max_length=32,
         default="",
@@ -77,7 +77,7 @@ class Student(models.Model):
         max_length=10,
         default="",
         verbose_name="идентификатор пользователя в Telegram",
-    )    
+    )
     discord_username = models.CharField(
         max_length=32,
         default="",
@@ -98,7 +98,6 @@ class Student(models.Model):
 
 
 class ProductManager(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     call_range_start = models.TimeField(blank=True, null=True)
     call_range_end = models.TimeField(blank=True, null=True)
 

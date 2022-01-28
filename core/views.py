@@ -1,9 +1,6 @@
-import json
-
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from django.db import transaction
 from django.http import JsonResponse
 
 from .models import Student
@@ -11,7 +8,7 @@ from .models import StudentProjectPreferences
 from .serializers import StudentSerializer
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_students_preferences(request):
     dumped_prefs = []
     prefs = StudentProjectPreferences.objects.all()
@@ -27,23 +24,22 @@ def get_students_preferences(request):
         dumped_prefs,
         safe=False,
         json_dumps_params={
-            'ensure_ascii': False,
-            'indent': 4,
-            }
-        )
+            "ensure_ascii": False,
+            "indent": 4,
+        },
+    )
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def add_student(request):
     serializer = StudentSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True) 
-    
-    tg_chat_id = serializer.validated_data.pop('tg_chat_id')
+    serializer.is_valid(raise_exception=True)
+
+    tg_chat_id = serializer.validated_data.pop("tg_chat_id")
 
     student, _ = Student.objects.update_or_create(
-        tg_chat_id=tg_chat_id,
-        defaults=serializer.validated_data
-        )
+        tg_chat_id=tg_chat_id, defaults=serializer.validated_data
+    )
     serializer = StudentSerializer(student)
-   
+
     return Response(serializer.data)
