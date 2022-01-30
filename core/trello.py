@@ -30,7 +30,7 @@ def delete_trello_board(key: str = "", token: str = "", board_id: str = "") -> b
     return True
 
 
-def create_trello_board(key: str = "", token: str = "", payload: dict = {}) -> int:
+def create_trello_board(key: str = "", token: str = "", payload: dict = {}) -> str:
     url = "https://api.trello.com/1/boards/"
     params = {
         "key": key,
