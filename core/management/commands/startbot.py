@@ -19,10 +19,10 @@ class Command(BaseCommand):
                     MessageHandler(Filters.regex(r'Не, пока подумаю'), cancel)
                 ],
                 WEEK: [
-                    MessageHandler(Filters.text, chose_week)
+                    MessageHandler(Filters.text, choose_week)
                 ]
                 SLOT: [
-                    MessageHandler(Filters.text, chose_slot)
+                    MessageHandler(Filters.text, choose_slot)
                 ]
             },
             fallbacks=[CommandHandler('cancel', cancel)]
