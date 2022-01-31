@@ -1,0 +1,15 @@
+{% extends 'admin/change_list.html' %}
+{% block object-tools %}
+<div style="display: flex; gap: 5px;">
+    <form action="distribute_students/" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Распределить студентов" />
+    </form>
+
+    <form action="send_notifications/" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Разослать уведомления" />
+    </form>
+</div>
+{{ block.super }}
+{% endblock %}
