@@ -15,7 +15,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joinned = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['name']
 
     objects = UserManager()
 
@@ -98,8 +98,8 @@ class Student(models.Model):
 
 
 class ProductManager(models.Model):
-    call_range_start = models.TimeField(blank=True, null=True)
-    call_range_end = models.TimeField(blank=True, null=True)
+    name = models.CharField('имя', max_length=20)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
 
     def __str__(self):
         return self.user.email
@@ -109,9 +109,24 @@ class TimeSlot(models.Model):
     """
     Временные интервалы.
     """
-
-    start = models.TimeField(blank=True, null=True)
-    end = models.TimeField(blank=True, null=True)
+    student = models.ForeignKey(
+        Student,
+        models.CASCADE,
+        verbose_name='студент',
+        blank=True,
+        null=True,
+        related_name='student_time_slots'
+    )
+    product_manager = models.ForeignKey(
+        ProductManager,
+        on_delete=models.CASCADE,
+        verbose_name='продукт-менеджер',
+        blank=True,
+        null=True,
+        related_name='pm_time_slots'
+    )
+    start = models.TimeField('начало созвона', blank=True, null=True)
+    end = models.TimeField('конец созвона', blank=True, null=True)
 
     class Meta:
         verbose_name = "Временной интервал"

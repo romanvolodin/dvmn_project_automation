@@ -47,9 +47,27 @@ class CustomUserAdmin(UserAdmin):
     ordering = ("email",)
 
 
-admin.site.register(ProductManager)
+class TimeSlotInline(admin.TabularInline):
+    model = TimeSlot
+    extra = 1
+    fields = ['start', 'end']
+
+
+@admin.register(ProductManager)
+class ProductManagerAdmin(admin.ModelAdmin):
+    inlines = [
+        TimeSlotInline
+    ]
+
+
+@admin.register(Student)
+class StudentAdmin(admin.ModelAdmin):
+    inlines = [
+        TimeSlotInline
+    ]
+
+
 admin.site.register(Project)
-admin.site.register(Student)
 admin.site.register(Team)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Week)
