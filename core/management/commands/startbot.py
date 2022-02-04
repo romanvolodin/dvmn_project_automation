@@ -20,7 +20,7 @@ class Command(BaseCommand):
                 ],
                 WEEK: [
                     MessageHandler(Filters.text, choose_week)
-                ]
+                ],
                 SLOT: [
                     MessageHandler(Filters.text, choose_slot)
                 ]

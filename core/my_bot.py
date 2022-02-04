@@ -5,7 +5,7 @@ import time
 import telegram
 from telegram.ext import ConversationHandler
 
-from core.models import ProductManager, Week, Student, Project, StudentProjectPreferences
+from core.models import ProductManager, Week, Student, Project, StudentProjectPreferences, TimeSlot
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -62,7 +62,6 @@ def choose_week(bot, update):
         )
     update.message.reply_text(text='Отлично, записал!')
     time.sleep(2)
-    update.message.reply_text(text='Выбери удобное время для созвона с продукт-менеджером!')
     time_slots = []
     product_managers = ProductManager.objects.all()
     for product_manager in product_managers:
@@ -74,8 +73,8 @@ def choose_week(bot, update):
                 time_slots.append(start_slot)
                 start_slot += timedelta(minutes=30)
     time_slots = sorted(list(set(time_slots)))
-    time_slots_to_str = [datetime.strftime(time_slot, '%H-%M') for time_slot in time_slots]
-    keyboard = [time_slots_to_str, ['Любое время']]
+    time_slots_to_str = [datetime.strftime(time_slot, '%H:%M') for time_slot in time_slots]
+    keyboard = [time_slots_to_str, ['В любое время!']]
     reply_markup = telegram.ReplyKeyboardMarkup(keyboard)
     update.message.reply_text(
         text='Выбери подходящие слоты для созвона с продукт-менеджером!',
@@ -84,8 +83,21 @@ def choose_week(bot, update):
 
 
 def choose_slot(bot, update):
+    update.message.reply_text(
+        text='Хорошо, записал! Если есть еще удобное время для созвона, то кликай по нему! Если закончил с выбором, то можешь нажать /cancel'
+    )
     str_time_slot = update.message.text
     tg_chat_id = update.message.chat.id
+    student = Student.objects.get(tg_chat_id=tg_chat_id)
+    str_time_slot_to_strat_time = datetime.strptime(str_time_slot, '%H:%M')
+    str_time_slot_to_end_time = str_time_slot_to_strat_time + timedelta(minutes=30)
+    start_time = str_time_slot_to_strat_time.time()
+    end_time = str_time_slot_to_end_time.time()
+    time_slot = TimeSlot.objects.create(
+        start=start_time, end=end_time
+    )
+    student_week_preference = StudentProjectPreferences.objects.get(student=student)
+    student_week_preference.time_slots.add(time_slot)
 
 
 def cancel(bot, update):
